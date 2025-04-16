@@ -1,7 +1,6 @@
 # 🐤 StillNotRaided
 
-*A self-hosted cryptographic warrant canary.*  
-Because you haven’t been raided. Yet.
+> A self-hosted cryptographic warrant canary. Because you haven’t been raided. Yet.
 
 For full setup instructions, see [`setup.md`](setup.md).
 
