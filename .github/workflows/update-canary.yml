@@ -1,0 +1,47 @@
+name: Manual Canary Update with GPG Signature
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Import GPG key
+        run: |
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          echo "trusted-key $GPG_KEY_ID" >> ~/.gnupg/gpg.conf
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+
+      - name: Update canary file
+        run: |
+          NEW_DATE=$(date -u +"%B %d, %Y")
+          echo "StillNotRaided – $NEW_DATE" > pages/canary.txt
+          echo "" >> pages/canary.txt
+          echo "As of the above date, we have not received any secret court orders," >> pages/canary.txt
+          echo "National Security Letters, or other gagged legal demands." >> pages/canary.txt
+          echo "" >> pages/canary.txt
+          echo "If this file is not updated every 14 days, you should assume that" >> pages/canary.txt
+          echo "we are no longer able to confirm this status." >> pages/canary.txt
+
+      - name: Sign the canary file
+        run: |
+          gpg --batch --yes --pinentry-mode loopback \
+              --passphrase "$GPG_PASSPHRASE" \
+              --output pages/canary.txt.sig \
+              --detach-sign pages/canary.txt
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pages
+          publish_branch: gh-pages
