@@ -3,6 +3,8 @@
 *A self-hosted cryptographic warrant canary.*  
 Because you haven’t been raided. Yet.
 
+For full setup instructions, see [`setup.md`](setup.md).
+
 ---
 
 ## 📜 What It Is
@@ -50,3 +52,10 @@ If the canary isn’t updated within 14 days, assume something’s wrong. This c
 ## 📦 Version
 
 `v1.0.0`
+
+---
+
+## 📄 License
+
+This project is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).  
+Commercial use is prohibited without prior written permission.
